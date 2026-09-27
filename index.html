@@ -1,0 +1,681 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Attendance Calculator | Karthikeyan</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+
+            background: linear-gradient(
+                135deg,
+                #09091a,
+                #191936,
+                #302052
+            );
+
+            color: white;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 430px;
+
+            padding: 28px;
+
+            background: rgba(20, 20, 35, 0.96);
+
+            border-radius: 25px;
+
+            border: 1px solid rgba(255,255,255,0.1);
+
+            box-shadow:
+                0 25px 60px rgba(0,0,0,0.5);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: #aaa;
+            font-size: 14px;
+        }
+
+        .developer {
+            margin-top: 10px;
+            color: #8b7cff;
+            font-weight: bold;
+        }
+
+        .target {
+            text-align: center;
+
+            background: #111122;
+
+            padding: 15px;
+
+            border-radius: 15px;
+
+            margin-bottom: 20px;
+        }
+
+        .target p {
+            color: #999;
+            font-size: 13px;
+        }
+
+        .target strong {
+            display: block;
+
+            color: #00e5a0;
+
+            font-size: 30px;
+
+            margin-top: 5px;
+        }
+
+        .input-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: #ddd;
+
+            font-size: 14px;
+        }
+
+        input {
+            width: 100%;
+
+            padding: 15px;
+
+            background: #0d0d19;
+
+            color: white;
+
+            border: 1px solid #373750;
+
+            border-radius: 12px;
+
+            outline: none;
+
+            font-size: 17px;
+        }
+
+        input:focus {
+            border-color: #7c6cff;
+        }
+
+        button {
+            width: 100%;
+
+            padding: 15px;
+
+            border: none;
+
+            border-radius: 13px;
+
+            background: linear-gradient(
+                135deg,
+                #6c5ce7,
+                #8e7dff
+            );
+
+            color: white;
+
+            font-size: 17px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        .results {
+            display: none;
+
+            margin-top: 22px;
+        }
+
+        .main-result {
+            text-align: center;
+
+            padding: 22px;
+
+            background: #101020;
+
+            border-radius: 18px;
+
+            margin-bottom: 12px;
+        }
+
+        .percentage {
+            font-size: 46px;
+
+            font-weight: bold;
+
+            color: #00e5a0;
+        }
+
+        .status {
+            margin-top: 8px;
+
+            font-size: 14px;
+
+            font-weight: bold;
+        }
+
+        .cards {
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 10px;
+        }
+
+        .card {
+            background: #17172a;
+
+            border-radius: 15px;
+
+            padding: 18px;
+
+            text-align: center;
+        }
+
+        .card .number {
+            font-size: 27px;
+
+            font-weight: bold;
+
+            margin-bottom: 6px;
+        }
+
+        .card .text {
+            color: #999;
+
+            font-size: 12px;
+        }
+
+        .message {
+            margin-top: 12px;
+
+            padding: 15px;
+
+            background: #17172a;
+
+            border-radius: 15px;
+
+            color: #ccc;
+
+            font-size: 14px;
+
+            line-height: 1.6;
+        }
+
+        .footer {
+            text-align: center;
+
+            margin-top: 22px;
+
+            color: #666;
+
+            font-size: 12px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+
+    <div class="header">
+
+        <h1>📊 Attendance Calculator</h1>
+
+        <p>
+            Find out how many periods you need to attend.
+        </p>
+
+        <div class="developer">
+            Developed by Karthikeyan
+        </div>
+
+    </div>
+
+
+    <!-- REQUIRED ATTENDANCE -->
+
+    <div class="target">
+
+        <p>Minimum Required Attendance</p>
+
+        <strong>75%</strong>
+
+    </div>
+
+
+    <!-- TOTAL PERIODS -->
+
+    <div class="input-group">
+
+        <label for="total">
+            Total Periods Conducted
+        </label>
+
+        <input
+            type="number"
+            id="total"
+            min="1"
+            placeholder="Example: 100"
+        >
+
+    </div>
+
+
+    <!-- PRESENT PERIODS -->
+
+    <div class="input-group">
+
+        <label for="present">
+            Present / Attended Periods
+        </label>
+
+        <input
+            type="number"
+            id="present"
+            min="0"
+            placeholder="Example: 72"
+        >
+
+    </div>
+
+
+    <!-- CALCULATE -->
+
+    <button onclick="calculateAttendance()">
+        Calculate Attendance
+    </button>
+
+
+    <!-- RESULTS -->
+
+    <div class="results" id="results">
+
+        <div class="main-result">
+
+            <div
+                class="percentage"
+                id="percentage"
+            >
+                0%
+            </div>
+
+            <div
+                class="status"
+                id="status"
+            >
+                -
+            </div>
+
+        </div>
+
+
+        <div class="cards">
+
+            <!-- BUNKED -->
+
+            <div class="card">
+
+                <div
+                    class="number"
+                    id="bunked"
+                >
+                    0
+                </div>
+
+                <div class="text">
+                    Periods Bunked
+                </div>
+
+            </div>
+
+
+            <!-- REQUIRED -->
+
+            <div class="card">
+
+                <div
+                    class="number"
+                    id="required"
+                >
+                    0
+                </div>
+
+                <div class="text">
+                    Must Attend
+                </div>
+
+            </div>
+
+
+            <!-- CAN BUNK -->
+
+            <div class="card">
+
+                <div
+                    class="number"
+                    id="canBunk"
+                >
+                    0
+                </div>
+
+                <div class="text">
+                    Can Bunk
+                </div>
+
+            </div>
+
+
+            <!-- SAFE ATTENDANCE -->
+
+            <div class="card">
+
+                <div
+                    class="number"
+                    id="safePercentage"
+                >
+                    75%
+                </div>
+
+                <div class="text">
+                    Target
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div
+            class="message"
+            id="message"
+        >
+        </div>
+
+    </div>
+
+
+    <div class="footer">
+        75% Attendance Planner • Developed by Karthikeyan
+    </div>
+
+</div>
+
+
+<script>
+
+function calculateAttendance() {
+
+    /*
+        GET USER INPUT
+    */
+
+    const total =
+        Number(
+            document.getElementById("total").value
+        );
+
+    const present =
+        Number(
+            document.getElementById("present").value
+        );
+
+
+    /*
+        VALIDATION
+    */
+
+    if (!Number.isFinite(total) || total <= 0) {
+
+        alert(
+            "Please enter the total number of periods."
+        );
+
+        return;
+    }
+
+
+    if (!Number.isFinite(present) || present < 0) {
+
+        alert(
+            "Please enter the present periods."
+        );
+
+        return;
+    }
+
+
+    if (present > total) {
+
+        alert(
+            "Present periods cannot be greater than total periods."
+        );
+
+        return;
+    }
+
+
+    /*
+        CURRENT ATTENDANCE
+
+        Attendance =
+        Present / Total × 100
+    */
+
+    const attendance =
+        (present / total) * 100;
+
+
+    /*
+        BUNKED PERIODS
+
+        Total - Present
+    */
+
+    const bunked =
+        total - present;
+
+
+    /*
+        HOW MANY PERIODS MUST BE ATTENDED
+        TO REACH 75%?
+
+        (present + x)
+        ---------------- >= 0.75
+        (total + x)
+
+        x =
+        (0.75 × total - present) / 0.25
+    */
+
+    let required = 0;
+
+
+    if (attendance < 75) {
+
+        required =
+            Math.ceil(
+                (0.75 * total - present) / 0.25
+            );
+
+    }
+
+
+    /*
+        HOW MANY PERIODS CAN BE BUNKED?
+
+        Only if current attendance
+        is already >= 75%.
+
+        present
+        ---------------- >= 0.75
+        total + x
+
+        x =
+        present / 0.75 - total
+    */
+
+    let canBunk = 0;
+
+
+    if (attendance >= 75) {
+
+        canBunk =
+            Math.floor(
+                present / 0.75 - total
+            );
+
+    }
+
+
+    /*
+        DISPLAY CURRENT ATTENDANCE
+    */
+
+    document.getElementById(
+        "percentage"
+    ).textContent =
+        attendance.toFixed(2) + "%";
+
+
+    /*
+        DISPLAY BUNKED
+    */
+
+    document.getElementById(
+        "bunked"
+    ).textContent =
+        bunked;
+
+
+    /*
+        DISPLAY REQUIRED
+    */
+
+    document.getElementById(
+        "required"
+    ).textContent =
+        required;
+
+
+    /*
+        DISPLAY CAN BUNK
+    */
+
+    document.getElementById(
+        "canBunk"
+    ).textContent =
+        canBunk;
+
+
+    /*
+        STATUS
+    */
+
+    const status =
+        document.getElementById("status");
+
+    const message =
+        document.getElementById("message");
+
+
+    if (attendance >= 75) {
+
+        status.textContent =
+            "✅ You have 75% or more attendance.";
+
+        status.style.color =
+            "#00e5a0";
+
+
+        if (canBunk > 0) {
+
+            message.innerHTML =
+                "You can miss approximately <b>" +
+                canBunk +
+                "</b> more period(s) and still maintain " +
+                "<b>75%</b> attendance.";
+
+        } else {
+
+            message.innerHTML =
+                "⚠️ You are currently at the minimum attendance level. " +
+                "Avoid missing more periods.";
+
+        }
+
+    } else {
+
+        status.textContent =
+            "⚠️ Attendance is below 75%.";
+
+        status.style.color =
+            "#ff7675";
+
+
+        message.innerHTML =
+            "You need to attend <b>" +
+            required +
+            "</b> consecutive period(s) " +
+            "to reach <b>75%</b> attendance.";
+
+    }
+
+
+    /*
+        SHOW RESULTS
+    */
+
+    document.getElementById(
+        "results"
+    ).style.display =
+        "block";
+}
+
+</script>
+
+</body>
+</html>
+```
